@@ -1,0 +1,30 @@
+class Solution {
+    public int countSubstrings(String S) {
+        int len = S.length(); // Get the length of the input string.
+        int ans = 0; // Initialize a variable to count the palindromic substrings.
+
+        for (int i = 0; i < len; i++) {
+            int j = i - 1; // Initialize a pointer j to the left of i.
+            int k = i; // Initialize a pointer k to the current position i.
+
+            // While the characters at k and k+1 are the same, expand the right end of the palindrome.
+            while (k < len - 1 && S.charAt(k) == S.charAt(k + 1)) {
+                k++;
+            }
+
+            // Calculate the number of palindromic substrings with this center (k).
+            // For each palindrome centered at k, there are (k - j) * (k - j + 1) / 2 substrings.
+            ans += (k - j) * (k - j + 1) / 2;
+
+            // Move the center index i to the next position after the expanded palindrome.
+            i = k++;
+
+            // Expand the palindrome in both directions (left and right) from the center.
+            // Count and add to 'ans' the palindromic substrings that can be formed.
+            while (j >= 0 && k < len && S.charAt(k++) == S.charAt(j--)) {
+                ans++;
+            }
+        }
+        return ans; // Return the total count of palindromic substrings.
+    }
+}
