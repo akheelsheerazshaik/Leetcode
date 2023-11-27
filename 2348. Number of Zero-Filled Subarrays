@@ -1,0 +1,27 @@
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        
+long consecutive_zero=0l;
+long possibleSubsets=0l;
+long totalSubsets=0l;
+        for(int i:nums)
+        {
+            if(i==0)
+            {
+                  consecutive_zero++;
+            }
+            else
+            {
+                possibleSubsets=(consecutive_zero*(consecutive_zero+1))/2;
+                  totalSubsets+=possibleSubsets;
+                  consecutive_zero=0;
+            }
+        }
+        if(consecutive_zero!=0)
+        {
+           possibleSubsets=(consecutive_zero*(consecutive_zero+1))/2;
+                  totalSubsets+=possibleSubsets;  
+        }
+        return totalSubsets;
+    }
+}
