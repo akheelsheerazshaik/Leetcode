@@ -1,0 +1,45 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int longestSubstringKUnique(String s, int k) {
+        int n = s.length();
+
+        // Step 1: Check for edge cases
+        if (n == 0 || k <= 0) {
+            return -1;
+        }
+
+        // Step 2: Initialize variables
+        int left = 0;
+        int maxLength = -1;
+        Map<Character, Integer> charCountMap = new HashMap<>();
+
+        // Step 3: Iterate through the string using a sliding window
+        for (int right = 0; right < n; right++) {
+            char rightChar = s.charAt(right);
+
+            // Update character count in the map
+            charCountMap.put(rightChar, charCountMap.getOrDefault(rightChar, 0) + 1);
+
+            // Shrink the window if the number of unique characters exceeds K
+            while (charCountMap.size() > k) {
+                char leftChar = s.charAt(left);
+
+                // Update character count in the map and move the left pointer
+                charCountMap.put(leftChar, charCountMap.get(leftChar) - 1);
+                if (charCountMap.get(leftChar) == 0) {
+                    charCountMap.remove(leftChar);
+                }
+
+                left++;
+            }
+
+            // Update the maximum length of the substring
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        // Step 4: Check if a valid substring was found
+        return (maxLength == -1) ? -1 : maxLength;
+    }
+}
