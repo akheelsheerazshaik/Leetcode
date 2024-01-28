@@ -1,0 +1,59 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int countAnagrams(String pat, String txt) {
+        int patLength = pat.length();
+        int txtLength = txt.length();
+
+        // Step 1: Check for edge case
+        if (patLength > txtLength) {
+            return 0;
+        }
+
+        // Step 2: Initialize frequency maps for pattern and current window in text
+        Map<Character, Integer> patMap = new HashMap<>();
+        Map<Character, Integer> windowMap = new HashMap<>();
+
+        for (char ch : pat.toCharArray()) {
+            patMap.put(ch, patMap.getOrDefault(ch, 0) + 1);
+        }
+
+        // Step 3: Initialize variables
+        int count = 0;
+        int left = 0;
+        int right = 0;
+
+        // Step 4: Slide the window over the text
+        while (right < txtLength) {
+            char currentChar = txt.charAt(right);
+
+            // Expand the window
+            windowMap.put(currentChar, windowMap.getOrDefault(currentChar, 0) + 1);
+
+            // Check if the window size is equal to the pattern size
+            if (right - left + 1 == patLength) {
+                // Check if the frequency maps are equal
+                if (windowMap.equals(patMap)) {
+                    count++;
+                }
+
+                // Move the window by 1 character to the right
+                char leftChar = txt.charAt(left);
+                windowMap.put(leftChar, windowMap.get(leftChar) - 1);
+
+                // Remove the character from the window map if its count becomes 0
+                if (windowMap.get(leftChar) == 0) {
+                    windowMap.remove(leftChar);
+                }
+
+                left++;
+            }
+
+            right++;
+        }
+
+        // Step 5: Return the count of anagrams
+        return count;
+    }
+}
