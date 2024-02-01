@@ -1,0 +1,44 @@
+public class BinarySearch {
+    public static int binarySearch(int[] arr, int K) {
+        // Step 1: Initialize left and right pointers
+        int left = 0;
+        int right = arr.length - 1;
+
+        // Step 2: Perform binary search until left pointer is less than or equal to right pointer
+        while (left <= right) {
+            // Step 3: Calculate the middle index of the current search space
+            int mid = left + (right - left) / 2;
+
+            // Step 4: Check if the middle element is equal to K
+            if (arr[mid] == K) {
+                // If yes, return the index of the middle element
+                return mid;
+            } else if (arr[mid] < K) {
+                // If K is greater, ignore the left half of the array
+                left = mid + 1;
+            } else {
+                // If K is smaller, ignore the right half of the array
+                right = mid - 1;
+            }
+        }
+
+        // Step 5: If the loop exits and no match is found, return -1
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        int[] sortedArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int targetValue = 7;
+
+        // Call binarySearch to find the position of targetValue in the array
+        int result = binarySearch(sortedArray, targetValue);
+
+        // Step 6: Check the result and print the output
+        if (result != -1) {
+            System.out.println("Element " + targetValue + " found at index " + result);
+        } else {
+            System.out.println("Element " + targetValue + " not found in the array");
+        }
+    }
+}
