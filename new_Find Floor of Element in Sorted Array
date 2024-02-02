@@ -1,0 +1,37 @@
+public class FloorElement {
+    public static int findFloorIndex(int[] arr, int x) {
+        int low = 0;
+        int high = arr.length - 1;
+        int floorIndex = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (arr[mid] == x) {
+                return mid; // Found an exact match, return the index
+            } else if (arr[mid] < x) {
+                floorIndex = mid; // Update the potential floor index and search in the right half
+                low = mid + 1;
+            } else {
+                high = mid - 1; // Search in the left half
+            }
+        }
+
+        return floorIndex;
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        int[] sortedArray = {1, 2, 8, 10, 10, 12, 19};
+        int targetValue = 5;
+
+        // Call findFloorIndex to get the index of the floor element
+        int resultIndex = findFloorIndex(sortedArray, targetValue);
+
+        if (resultIndex != -1) {
+            System.out.println("The floor element is at index: " + resultIndex);
+        } else {
+            System.out.println("No floor element found in the array for the given value.");
+        }
+    }
+}
