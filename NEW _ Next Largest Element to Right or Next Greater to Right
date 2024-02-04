@@ -1,0 +1,45 @@
+import java.util.Stack;
+import java.util.HashMap;
+
+class Solution {
+    public static int[] nextGreaterElement(int[] arr) {
+        int n = arr.length;
+        int[] result = new int[n];
+        Stack<Integer> stack = new Stack<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        // Iterate through the array from right to left
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && stack.peek() <= arr[i]) {
+                stack.pop(); // Pop elements smaller than or equal to the current element
+            }
+
+            if (stack.isEmpty()) {
+                result[i] = -1; // If no greater element found, set it to -1
+            } else {
+                result[i] = stack.peek(); // Set the next greater element
+            }
+
+            stack.push(arr[i]); // Push the current element to the stack
+            map.put(arr[i], result[i]); // Store the result in a map for future reference
+        }
+
+        // Convert the map to the final result array
+        for (int i = 0; i < n; i++) {
+            result[i] = map.get(arr[i]);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {4, 5, 2, 10, 8};
+        int[] result = nextGreaterElement(arr);
+
+        // Display the result
+        System.out.print("Next Greater Elements: ");
+        for (int num : result) {
+            System.out.print(num + " ");
+        }
+    }
+}
