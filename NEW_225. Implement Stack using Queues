@@ -1,0 +1,47 @@
+NEW 
+
+class MyQueue {
+    private Deque<Integer> stk1 = new ArrayDeque<>();
+    private Deque<Integer> stk2 = new ArrayDeque<>();
+
+    // Constructor for initializing MyQueue
+    public MyQueue() {
+
+    }
+    
+    // Method to push an element into the queue
+    public void push(int x) {
+        stk1.push(x);
+    }
+    
+    // Method to pop the front element from the queue
+    public int pop() {
+        // Move elements from stk1 to stk2 before popping
+        move();
+        return stk2.pop();
+    }
+    
+    // Method to return the front element of the queue without removing it
+    public int peek() {
+        // Move elements from stk1 to stk2 before peeking
+        move();
+        return stk2.peek();
+    }
+    
+    // Method to check if the queue is empty
+    public boolean empty() {
+        // Queue is empty if both stacks are empty
+        return stk1.isEmpty() && stk2.isEmpty();
+    }
+
+    // Helper method to move elements from stk1 to stk2
+    private void move() {
+        // Move elements only if stk2 is empty
+        while (stk2.isEmpty()) {
+            // Move elements from stk1 to stk2
+            while (!stk1.isEmpty()) {
+                stk2.push(stk1.pop());
+            }
+        }
+    }
+}
