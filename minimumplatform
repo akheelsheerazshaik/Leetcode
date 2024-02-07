@@ -1,0 +1,49 @@
+import java.util.Arrays;
+
+class MinimumPlatforms {
+    // Function to find the minimum number of platforms required
+    public static int findMinPlatforms(int[] arrival, int[] departure) {
+        // Check if the arrival and departure arrays are not null and have the same length
+        if (arrival == null || departure == null || arrival.length != departure.length) {
+            return -1; // Invalid input
+        }
+
+        // Step 1: Sort the arrival and departure times
+        Arrays.sort(arrival);
+        Arrays.sort(departure);
+
+        // Step 2: Initialize variables
+        int platformsNeeded = 1; // At least one platform is needed
+        int minPlatforms = 1; // Minimum number of platforms needed at any instance
+        int i = 1; // Pointer for arrival times
+        int j = 0; // Pointer for departure times
+
+        // Step 3: Iterate through the sorted times
+        while (i < arrival.length && j < departure.length) {
+            // Check if a train is arriving before the departure of the previous train
+            if (arrival[i] <= departure[j]) {
+                platformsNeeded++; // Need an additional platform
+                i++; // Move to the next arrival time
+            } else {
+                platformsNeeded--; // One train departed, free up a platform
+                j++; // Move to the next departure time
+            }
+
+            // Update the minimum number of platforms needed at any instance
+            minPlatforms = Math.max(minPlatforms, platformsNeeded);
+        }
+
+        // Step 4: Return the minimum number of platforms needed
+        return minPlatforms;
+    }
+
+    // Main method for testing
+    public static void main(String[] args) {
+        int[] arrival = { 900, 940, 950, 1100, 1500, 1800 };
+        int[] departure = { 910, 1200, 1120, 1130, 1900, 2000 };
+
+        int minPlatforms = findMinPlatforms(arrival, departure);
+
+        System.out.println("Minimum platforms needed: " + minPlatforms);
+    }
+}
