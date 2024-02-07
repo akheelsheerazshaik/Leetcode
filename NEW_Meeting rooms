@@ -1,0 +1,37 @@
+NEW
+
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        // Check if the intervals array is null or empty
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+
+        // Sort the intervals based on start time in ascending order
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        // Use a min heap (PriorityQueue) to track the end times of ongoing meetings
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        // Add the end time of the first meeting to the min heap
+        minHeap.offer(intervals[0][1]);
+
+        // Iterate through the sorted intervals starting from the second meeting
+        for (int i = 1; i < intervals.length; i++) {
+            // Check if the start time of the current meeting is greater than or equal to the earliest end time in the min heap
+            if (intervals[i][0] >= minHeap.peek()) {
+                // If true, remove the earliest end time from the min heap
+                minHeap.poll();
+            }
+
+            // Add the end time of the current meeting to the min heap
+            minHeap.offer(intervals[i][1]);
+        }
+
+        // The size of the min heap represents the minimum number of conference rooms needed
+        return minHeap.size();
+    }
+}
