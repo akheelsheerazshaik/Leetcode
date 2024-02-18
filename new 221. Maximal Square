@@ -1,0 +1,39 @@
+new
+
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        // Get the number of rows and columns in the matrix
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        // Initialize a 2D array to store the side length of the largest square ending at each position
+        int ds[][] = new int[n][m];
+
+        // Initialize a variable to store the maximum side length
+        int ans = 0;
+
+        // Iterate through each cell in the matrix
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                // Check if the current cell is in the first row or first column
+                if (i == 0 || j == 0) {
+                    // If the cell contains '1', set the side length to 1 and update the maximum side length
+                    if (matrix[i][j] == '1') {
+                        ds[i][j] = 1;
+                        ans = Math.max(ans, ds[i][j]);
+                    }
+                } else {
+                    // For cells not in the first row or first column
+                    // If the cell contains '1', update the side length based on the neighboring cells
+                    if (matrix[i][j] == '1') {
+                        ds[i][j] = Math.min(ds[i-1][j-1], Math.min(ds[i][j-1], ds[i-1][j])) + 1;
+                        ans = Math.max(ans, ds[i][j]);
+                    }
+                }
+            }
+        }
+
+        // Return the area of the largest square (side length squared)
+        return ans * ans;
+    }
+}
