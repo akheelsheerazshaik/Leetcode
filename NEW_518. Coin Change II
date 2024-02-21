@@ -1,0 +1,24 @@
+class Solution {
+    public int change(int amount, int[] coins) {
+        // Create an array to store the number of ways to make change for each amount
+        int[] dp = new int[amount + 1];
+
+        // If the amount is 0, there is only 1 way of making change (no money)
+        dp[0] = 1;
+
+        // Iterate through each coin denomination
+        for (int coin : coins) {
+            // Iterate through each amount from 1 to the given amount
+            for (int i = 1; i <= amount; i++) {
+                // Check if the current coin can contribute to making change for the current amount
+                if (coin <= i) {
+                    // Update the number of ways to make change for the current amount
+                    dp[i] += dp[i - coin];
+                }
+            }
+        }
+
+        // The final result is stored in dp[amount]
+        return dp[amount];
+    }
+}
