@@ -1,0 +1,28 @@
+
+
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        // Create an array to store the minimum number of coins needed for each amount
+        int[] dp = new int[amount + 1];
+
+        // Initialize the array with a value larger than any possible solution
+        for (int i = 1; i <= amount; i++) {
+            dp[i] = Integer.MAX_VALUE; 
+        }
+
+        // Iterate through each target amount from 1 to the given amount
+        for (int target = 1; target <= amount; target++) {
+            // Iterate through each coin denomination
+            for (int c = 0; c < coins.length; c++) {
+                // Check if subtracting the current coin from the target amount is valid
+                if (target - coins[c] >= 0 && dp[target - coins[c]] != Integer.MAX_VALUE) {
+                    // Update the minimum number of coins needed for the current target amount
+                    dp[target] = Math.min(dp[target], 1 + dp[target - coins[c]]);
+                }
+            }
+        }
+
+        // If the final entry in the array is still the initial value, there is no solution
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+}
