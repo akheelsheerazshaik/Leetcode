@@ -1,0 +1,49 @@
+class Solution {
+    public boolean function(String s, HashSet<String> words, int idx, int[] dp) {
+        // Base case: if we have reached the end of the string, return true
+        if (idx == s.length())
+            return true;
+
+        // Check if the result for the current index is already computed
+        if (dp[idx] != -1) {
+            // If dp[idx] is 1, return true; otherwise, return false
+            return dp[idx] == 1 ? true : false;
+        }
+
+        // Initialize an empty string to build substrings from the current index
+        String temp = "";
+
+        // Iterate over the string starting from the current index
+        for (int i = idx; i < s.length(); i++) {
+            temp = temp + s.charAt(i);
+
+            // Check if the current substring matches any word in the wordDict
+            for (String word : words) {
+                if (temp.compareTo(word) == 0)
+                    // If the current substring matches a word, recursively check the remaining string
+                    if (function(s, words, i + 1, dp)) {
+                        dp[idx] = 1; // Update dp array for the current index to true
+                        return true;
+                    }
+            }
+        }
+
+        // If no valid word break is found, update dp array for the current index to false
+        dp[idx] = 0;
+        return false;
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // Create a HashSet for faster word lookup
+        HashSet<String> set = new HashSet<>();
+        set.addAll(wordDict);
+
+        // Initialize dp array with -1, where dp[i] represents if a valid word break exists
+        // starting from index i in the string
+        int[] dp = new int[s.length()];
+        Arrays.fill(dp, -1);
+
+        // Call the recursive function to check if a valid word break exists
+        return function(s, set, 0, dp);
+    }
+}
