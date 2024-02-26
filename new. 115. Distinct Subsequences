@@ -1,0 +1,44 @@
+class Solution {
+    public int numDistinct(String s, String t) {
+        int n = s.length() + 1;
+        int m = t.length() + 1;
+        int[][] memo = new int[n][m];
+
+        // Initialize memoization array with -1
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        // Call the recursive function to find the number of distinct subsequences
+        return recursion(s, t, 0, 0, memo);
+    }
+
+    public int recursion(String s, String t, int sIdx, int tIdx, int[][] memo) {
+        // Check if the result for the current indices is already memoized
+        if (memo[sIdx][tIdx] != -1) {
+            return memo[sIdx][tIdx];
+        }
+
+        // Base case: if all characters in t are matched, one subsequence is found
+        if (tIdx >= t.length()) {
+            return 1;
+        }
+
+        // Base case: if all characters in s are processed but not all in t, no subsequence found
+        if (sIdx >= s.length()) {
+            return 0;
+        }
+
+        // If the current characters match, two options: include the character or skip it
+        if (t.charAt(tIdx) == s.charAt(sIdx)) {
+            memo[sIdx][tIdx] =
+                recursion(s, t, sIdx + 1, tIdx + 1, memo) +  // include the character
+                recursion(s, t, sIdx + 1, tIdx, memo);       // skip the character
+            return memo[sIdx][tIdx];
+        }
+
+        // If the current characters don't match, only option is to skip the character in s
+        memo[sIdx][tIdx] = recursion(s, t, sIdx + 1, tIdx, memo);
+        return memo[sIdx][tIdx];
+    }
+}
