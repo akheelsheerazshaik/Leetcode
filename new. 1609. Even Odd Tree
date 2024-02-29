@@ -1,0 +1,56 @@
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        // Check if the root is null, in which case the tree is considered even-odd.
+        if (root == null) {
+            return true;
+        }
+
+        // Initialize a queue for level order traversal and a flag to alternate between even and odd levels.
+        Queue<TreeNode> queue = new LinkedList<>();
+        boolean flag = true; // flag is true for even levels and false for odd levels.
+        queue.offer(root);
+
+        // Start level order traversal using a while loop.
+        while (!queue.isEmpty()) {
+            // Get the size of the current level.
+            int size = queue.size();
+
+            // Initialize prev to either positive or negative infinity based on the flag.
+            int prev = flag ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+            // Iterate over nodes at the current level.
+            for (int i = 0; i < size; i++) {
+                // Dequeue a node from the front of the queue.
+                TreeNode node = queue.poll();
+
+                // Check if the current node violates the rules for even or odd levels.
+                if (flag) {
+                    if (node.val % 2 == 0 || node.val <= prev) {
+                        return false;
+                    }
+                } else {
+                    if (node.val % 2 != 0 || node.val >= prev) {
+                        return false;
+                    }
+                }
+
+                // Enqueue the left and right children if they exist.
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+
+                // Update prev to the current node's value.
+                prev = node.val;
+            }
+
+            // Toggle the flag to switch between even and odd levels.
+            flag = !flag;
+        }
+
+        // If the traversal completes without any violations, return true.
+        return true;
+    }
+}
