@@ -1,0 +1,33 @@
+class Solution {
+    public int strStr(String haystack, String needle) {
+        // Get the lengths of the haystack and needle strings
+        int hLen = haystack.length();
+        int nLen = needle.length();
+        
+        // Initialize an index to keep track of the position in the needle
+        int nIndex = 0;
+
+        // Iterate through each character in the haystack
+        for (int i = 0; i < hLen; i++) {
+            // Check if the current character in haystack is equal to the character in needle at nIndex
+            if (haystack.charAt(i) == needle.charAt(nIndex)) {
+                // If they are equal, increment the needle index
+                nIndex++;
+            } else {
+                // If the characters are not equal, reset the loop index to the next position after the previous start index
+                i = i - nIndex;
+                // Reset the needle index to the beginning
+                nIndex = 0;
+            }
+
+            // Check if the entire needle has been found in the haystack
+            if (nIndex == nLen) {
+                // If yes, return the starting index of the substring in the haystack
+                return i - nLen + 1;
+            }
+        }
+
+        // If the loop completes and no match is found, return -1 indicating that the needle is not present in the haystack
+        return -1;
+    }
+}
