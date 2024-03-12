@@ -1,0 +1,62 @@
+new
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeZeroSumSublists(ListNode head) {
+        // Initialize the prefixSum to 0 and create a HashMap to store prefix sums and corresponding nodes.
+        int prefixSum = 0;
+        HashMap<Integer, ListNode> map = new HashMap<>();
+        
+        // Create a dummy node and set it as the head of the modified linked list.
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        map.put(0, dummy); // Put 0 as a prefix sum with the dummy node in the map.
+
+        // Traverse the linked list.
+        while (head != null) {
+            // Update the prefixSum by adding the current node's value.
+            prefixSum += head.val;
+
+            // Check if the current prefixSum exists in the map.
+            if (map.containsKey(prefixSum)) {
+                // If it exists, get the node where this prefixSum was first encountered.
+                ListNode start = map.get(prefixSum);
+                
+                // Create a temporary node for iteration and calculate the sum from start to the current node.
+                ListNode temp = start;
+                int sum = prefixSum;
+                
+                // Iterate from the start node to the current node.
+                while (temp != head) {
+                    temp = temp.next;
+                    sum += temp.val;
+                    
+                    // Remove entries from the map for prefixSums encountered in between start and the current node.
+                    if (temp != head)
+                        map.remove(sum);
+                }
+                
+                // Update the next pointer of the start node to skip the nodes with zero sum.
+                start.next = head.next;
+            } else {
+                // If the current prefixSum is not in the map, add it along with the current node.
+                map.put(prefixSum, head);
+            }
+
+            // Move to the next node in the linked list.
+            head = head.next;
+        }
+
+        // Return the modified linked list starting from the dummy node.
+        return dummy.next;
+    }
+}
